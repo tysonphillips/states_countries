@@ -1,0 +1,11 @@
+{
+	"version": "0.1.0",
+	"name": "State/Country Manager",
+	"description": "Modify stored countries and states in Blesta.",
+	"authors": [
+		{
+			"name": "tysonphillips",
+			"url": "https://github.com/tysonphillips"
+		}
+	]
+}

@@ -1,0 +1,84 @@
+		<?php
+		if ($this->Html->ifSet($states, false)) {
+		?>
+		<div class="state-list">
+			<div id="state-<?php $this->Html->_($country->alpha2);?>" class="links_row">
+				<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_main/addstate/" . $this->Html->ifSet($country->alpha2));?>" class="btn_right">
+					<span><?php $this->_("AdminMain.getstates.categorylink_add_state");?></span>
+				</a>
+				<a href="#all" class="all-states btn_right">
+					<span><?php $this->_("AdminMain.getstates.show_all");?></span>
+				</a>
+				<a href="#in_use" class="in_use-states btn_right" style="display:none;">
+					<span><?php $this->_("AdminMain.getstates.show_in_use");?></span>
+				</a>
+			</div>
+			<div class="clear"></div>
+			<div class="empty-states empty_section" style="display:none;">
+				<div class="empty_box">
+					<?php $this->_("AdminMain.getstates.no_results");?>
+				</div>
+			</div>
+			<div class="states group_title_row">
+				<div class="title_row first">
+					<h3><?php $this->_("AdminMain.getstates.heading_states");?></h3>
+				</div>
+				<table class="table">
+					<tr class="heading_row">
+						<td><?php $this->_("AdminMain.getstates.heading_state_name");?></td>
+						<td><?php $this->_("AdminMain.getstates.heading_state_code");?></td>
+						<td>
+							<?php $this->_("AdminMain.getstates.heading_country_in_use");?>
+							<span class="tooltip">
+								<?php echo $this->_("AppController.tooltip.text");?>
+								<div><?php $this->_("AdminMain.!tooltip.state_in_use");?></div>
+							</span>
+						</td>
+						<td class="last"><?php $this->_("AdminDepartments.index.heading_options");?></td>
+					</tr>
+					<?php
+					// Display all states
+					$i = 0;
+					foreach ($states as $state) {
+						$in_use = ($this->Html->ifSet($state->num_contacts) > 0);
+					?>
+					<tr class="<?php echo $this->Html->safe($this->Html->concat(" ", "state-row", (($i++%2 == 1) ? "odd_row" : "")));?> <?php echo $in_use ? "in_use" : "";?>"<?php echo !$in_use ? " style=\"display:none;\"" : "";?>>
+						<td><?php $this->Html->_($state->name);?></td>
+						<td><?php $this->Html->_($state->code);?></td>
+						<td><?php $this->Html->_($state->num_contacts);?></td>
+						<td class="last">
+							<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_main/edit/" . $this->Html->ifSet($country->alpha2) . "/");?>"><?php $this->_("AdminMain.index.option_edit");?></a>
+							<?php
+							if (!$in_use) {
+							?>
+							<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_main/delete/" . $this->Html->ifSet($country->alpha2) . "/");?>" class="manage"><?php $this->_("AdminMain.index.option_delete");?></a>
+							<?php
+							}
+							?>
+						</td>
+					</tr>
+					<?php
+					}
+					unset($i);
+					?>
+				</table>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$(this).blestaBindToolTips();
+				$(this).bindToggleAllStates('#state-<?php $this->Html->_($country->alpha2);?>');
+			});
+		</script>
+		<?php
+		}
+		else {
+		?>
+		<div class="empty_section">
+			<div class="empty_box">
+				<?php $this->_("AdminMain.getstates.no_results");?>
+			</div>
+		</div>
+		<?php
+		}
+		?>
