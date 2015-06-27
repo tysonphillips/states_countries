@@ -37,9 +37,34 @@ class StatesCountriesPlugin extends Plugin {
             'alias' => "states_countries.admin_main",
             'action' => "*"
         );
-		$this->Permissions->add($perm);
 		
-		if (($errors = $this->Permissions->errors())) {
+		// Add permission to view
+		$this->Permissions->add($perm);
+		$errors = $this->Permissions->errors();
+		
+		// Manage countries
+		if (empty($errors)) {
+			$perm = array_merge($perm, array(
+				'name' => Language::_("StatesCountriesPlugin.admin_countries.name", true),
+				'alias' => "states_countries.admin_countries"
+			));
+			$this->Permissions->add($perm);
+			
+			$errors = $this->Permissions->errors();
+		}
+		
+		// Manage states
+		if (empty($errors)) {
+			$perm = array_merge($perm, array(
+				'name' => Language::_("StatesCountriesPlugin.admin_states.name", true),
+				'alias' => "states_countries.admin_states"
+			));
+			$this->Permissions->add($perm);
+			
+			$errors = $this->Permissions->errors();
+		}
+		
+		if ($errors) {
 			$this->Input->setErrors($errors);
 			return;
 		}
@@ -54,10 +79,15 @@ class StatesCountriesPlugin extends Plugin {
 	public function uninstall($plugin_id, $last_instance) {
 		Loader::loadModels($this, array("Permissions"));
 		
-		$permission = $this->Permissions->getByAlias("states_countries.admin_main", $plugin_id);
-		if ($permission) {
+		$permissions = array(
+			$this->Permissions->getByAlias("states_countries.admin_main", $plugin_id),
+			$this->Permissions->getByAlias("states_countries.admin_countries", $plugin_id),
+			$this->Permissions->getByAlias("states_countries.admin_states", $plugin_id)
+		);
+		
+		foreach ($permissions as $permission) {
 			$this->Permissions->delete($permission->id);
-        }
+		}
 	}
 	
 	/**

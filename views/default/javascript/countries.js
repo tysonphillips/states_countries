@@ -47,7 +47,7 @@
         
         bindToggleAllStates: function(section) {
             // No states in use, hide them
-            if ($(section).closest('.state-list').find('.states table tr.in_use').length == 0) {
+            if ($(section).closest('.state-list').find('.states table tr.state-row.in_use').length == 0) {
                 $(section).closest('.state-list').find('.states').hide();
                 $(section).closest('.state-list').find('.empty-states').show();
             }
@@ -76,16 +76,16 @@
                 $(states).find('.all-states').show();
                 $(states).find('.states table tr.state-row').hide();
                 
-                if ($(states).find('.states table tr.in_use').length == 0) {
+                if ($(states).find('.states table tr.state-row.in_use').length == 0) {
                     $(states).find('.empty-states').show();
                     $(states).find('.states').hide();
                 }
                 else {
                     $(states).find('.states').show();
-                    $(states).find('.states table tr.in_use').show();
+                    $(states).find('.states table tr.state-row.in_use').show();
                     $(states).find('.empty-states').hide();
                     
-                    $(states).updateZebraStriping($(states).find('.states table tr.in_use'));
+                    $(states).updateZebraStriping($(states).find('.states table tr.state-row.in_use'));
                 }
                 
                 return false;

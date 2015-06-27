@@ -5,7 +5,7 @@
             array(
                 'name' => $this->_("AdminMain.index.categorylink_add", true),
                 'attributes' => array(
-                    'href' => $this->Html->safe($this->base_uri . "plugin/states_countries/admin_main/add/"),
+                    'href' => $this->Html->safe($this->base_uri . "plugin/states_countries/admin_countries/add/"),
                     'target' => "_blank"
                 ),
             ),
@@ -65,15 +65,11 @@
                 <td><?php $this->Html->_($country->alpha3);?></td>
                 <td><?php $this->Html->_($country->num_contacts);?></td>
                 <td class="last">
-                    <a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_main/edit/" . $this->Html->ifSet($country->alpha2) . "/");?>">
-                        <?php $this->_("AdminMain.index.option_edit");?>
-                    </a>
+                    <a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_countries/edit/" . $this->Html->ifSet($country->alpha2) . "/");?>"><?php $this->_("AdminMain.index.option_edit");?></a>
                     <?php
                     if (!$in_use) {
                     ?>
-                    <a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_main/delete/" . $this->Html->ifSet($country->alpha2) . "/");?>" class="manage">
-                        <?php $this->_("AdminDepartments.index.option_delete");?>
-                    </a>
+                    <a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_countries/delete/" . $this->Html->ifSet($country->alpha2) . "/");?>" class="manage"><?php $this->_("AdminMain.index.option_delete");?></a>
                     <?php
                     }
                     ?>

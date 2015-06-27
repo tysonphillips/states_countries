@@ -3,7 +3,7 @@
 		?>
 		<div class="state-list">
 			<div id="state-<?php $this->Html->_($country->alpha2);?>" class="links_row">
-				<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_main/addstate/" . $this->Html->ifSet($country->alpha2));?>" class="btn_right">
+				<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_states/add/" . $this->Html->ifSet($country->alpha2));?>" class="btn_right">
 					<span><?php $this->_("AdminMain.getstates.categorylink_add_state");?></span>
 				</a>
 				<a href="#all" class="all-states btn_right">
@@ -34,7 +34,7 @@
 								<div><?php $this->_("AdminMain.!tooltip.state_in_use");?></div>
 							</span>
 						</td>
-						<td class="last"><?php $this->_("AdminDepartments.index.heading_options");?></td>
+						<td class="last"><?php $this->_("AdminMain.index.heading_options");?></td>
 					</tr>
 					<?php
 					// Display all states
@@ -47,12 +47,16 @@
 						<td><?php $this->Html->_($state->code);?></td>
 						<td><?php $this->Html->_($state->num_contacts);?></td>
 						<td class="last">
-							<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_main/edit/" . $this->Html->ifSet($country->alpha2) . "/");?>"><?php $this->_("AdminMain.index.option_edit");?></a>
+							<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_states/edit/" . $this->Html->ifSet($country->alpha2) . "/" . $this->Html->ifSet($state->code));?>"><?php $this->_("AdminMain.index.option_edit");?></a>
 							<?php
 							if (!$in_use) {
+								$this->Form->create($this->base_uri . "plugin/states_countries/admin_states/delete/");
+								$this->Form->fieldHidden("country_alpha2", $this->Html->ifSet($country->alpha2));
+								$this->Form->fieldHidden("code", $this->Html->ifSet($state->code));
 							?>
-							<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_main/delete/" . $this->Html->ifSet($country->alpha2) . "/");?>" class="manage"><?php $this->_("AdminMain.index.option_delete");?></a>
+							<a href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_states/delete/");?>" class="manage" rel="<?php echo $this->Html->safe($this->_("AdminMain.getstates.confirm_delete", true, $this->Html->ifSet($state->name)));?>"><?php $this->_("AdminMain.index.option_delete");?></a>
 							<?php
+								$this->Form->end();
 							}
 							?>
 						</td>
@@ -68,6 +72,9 @@
 			$(document).ready(function() {
 				$(this).blestaBindToolTips();
 				$(this).bindToggleAllStates('#state-<?php $this->Html->_($country->alpha2);?>');
+				
+				// Handle confirmation
+				$('#state-<?php $this->Html->_($country->alpha2);?>').closest('.state-list').find('.states table a.manage[rel]').blestaModalConfirm({base_url: '<?php echo $this->base_uri;?>', close: '<?php $this->_("AppController.modal.text_close");?>', submit: true});
 			});
 		</script>
 		<?php

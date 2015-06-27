@@ -1,7 +1,7 @@
 {
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"name": "State/Country Manager",
-	"description": "Modify stored countries and states in Blesta.",
+	"description": "Modify countries and states in Blesta.",
 	"authors": [
 		{
 			"name": "tysonphillips",

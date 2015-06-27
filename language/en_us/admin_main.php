@@ -31,4 +31,6 @@ $lang['AdminMain.getstates.heading_state_name'] = "Name";
 $lang['AdminMain.getstates.heading_state_code'] = "Code";
 $lang['AdminMain.getstates.heading_country_in_use'] = "In Use By";
 
+$lang['AdminMain.getstates.confirm_delete'] = "Are you sure you want to delete %1\$s?"; // %1$s is the name of the state
+
 $lang['AdminMain.getstates.no_results'] = "There are no states.";
