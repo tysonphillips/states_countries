@@ -3,13 +3,6 @@
         
         $link_buttons = array(
             array(
-                'name' => $this->_("AdminMain.index.categorylink_add", true),
-                'attributes' => array(
-                    'href' => $this->Html->safe($this->base_uri . "plugin/states_countries/admin_countries/add/"),
-                    'target' => "_blank"
-                ),
-            ),
-            array(
                 'name' => $this->_("AdminMain.index.show_all", true),
                 'attributes' => array(
                     'href' => "#all",
@@ -25,6 +18,20 @@
                 )
             )
         );
+        
+        if ($this->Html->ifSet($countries_authorized)) {
+            $add_button = array(
+                array(
+                    'name' => $this->_("AdminMain.index.categorylink_add", true),
+                    'attributes' => array(
+                        'href' => $this->Html->safe($this->base_uri . "plugin/states_countries/admin_countries/add/"),
+                        'target' => "_blank"
+                    ),
+                )
+            );
+            $link_buttons = array_merge($add_button, $link_buttons);
+        }
+        
         
         $this->Widget->clear();
         $this->Widget->setLinkButtons($link_buttons);
@@ -43,37 +50,66 @@
                 <td><?php $this->_("AdminMain.index.heading_country_alt_name");?></td>
                 <td><?php $this->_("AdminMain.index.heading_country_alpha2");?></td>
                 <td><?php $this->_("AdminMain.index.heading_country_alpha3");?></td>
-                <td>
-                    <?php $this->_("AdminMain.index.heading_country_in_use");?>
-                    <span class="tooltip">
-                        <?php echo $this->_("AppController.tooltip.text");?>
-                        <div><?php $this->_("AdminMain.!tooltip.country_in_use");?></div>
-                    </span>
-                </td>
-                <td class="last"><?php $this->_("AdminDepartments.index.heading_options");?></td>
+                <td><?php $this->_("AdminMain.index.heading_country_in_use");?></td>
+                <?php
+                if ($this->Html->ifSet($countries_authorized)) {
+                ?>
+                <td class="last"><?php $this->_("AdminMain.index.heading_options");?></td>
+                <?php
+                }
+                ?>
             </tr>
             <?php
             // Display all countries
             $i = 0;
             foreach ($countries as $country) {
-                $in_use = ($this->Html->ifSet($country->num_contacts) > 0);
+                $in_use = $this->Html->ifSet($country->num_contacts, 0) + $this->Html->ifSet($country->num_taxes, 0) + $this->Html->ifSet($country->num_cc_accounts, 0) + $this->Html->ifSet($country->num_ach_accounts, 0);
+                $in_use = ($in_use > 0);
             ?>
             <tr class="<?php echo $this->Html->safe($this->Html->concat(" ", "expand", "country-row", (($i++%2 == 1) ? "odd_row" : ""), ($in_use ? "in_use" : "")));?>"<?php echo !$in_use ? " style=\"display:none;\"" : "";?>>
                 <td><?php $this->Html->_($country->name);?></td>
                 <td><?php $this->Html->_($country->alt_name);?></td>
                 <td><?php $this->Html->_($country->alpha2);?></td>
                 <td><?php $this->Html->_($country->alpha3);?></td>
-                <td><?php $this->Html->_($country->num_contacts);?></td>
+                <td>
+                    <div class="<?php echo $in_use ? "active" : "inactive";?>"><?php
+                        if ($in_use) {
+                        ?>
+                        <span class="tooltip" style="margin-left:0;">&nbsp;&nbsp;&nbsp;
+                            <div>
+                                <?php
+                                $this->_("AdminMain.tooltip.country.in_use_by", false,
+                                    $this->Html->ifSet($country->num_contacts, 0),
+                                    $this->Html->ifSet($country->num_taxes, 0),
+                                    $this->Html->ifSet($country->num_cc_accounts, 0),
+                                    $this->Html->ifSet($country->num_ach_accounts, 0)
+                                );
+                                ?>
+                            </div>
+                        </span>
+                        <?php
+                        }
+                    ?></div>
+                </td>
+                <?php
+                if ($this->Html->ifSet($countries_authorized)) {
+                ?>
                 <td class="last">
                     <a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_countries/edit/" . $this->Html->ifSet($country->alpha2) . "/");?>"><?php $this->_("AdminMain.index.option_edit");?></a>
                     <?php
                     if (!$in_use) {
+                        $this->Form->create($this->base_uri . "plugin/states_countries/admin_countries/delete/");
+                        $this->Form->fieldHidden("alpha2", $this->Html->ifSet($country->alpha2));
                     ?>
-                    <a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_countries/delete/" . $this->Html->ifSet($country->alpha2) . "/");?>" class="manage"><?php $this->_("AdminMain.index.option_delete");?></a>
+                    <a href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_countries/delete/");?>" class="manage" rel="<?php echo $this->Html->safe($this->_("AdminMain.index.confirm_delete", true, $this->Html->ifSet($country->name)));?>"><?php $this->_("AdminMain.index.option_delete");?></a>
                     <?php
+                        $this->Form->end();
                     }
                     ?>
                 </td>
+                <?php
+                }
+                ?>
             </tr>
             <tr class="expand_details" id="country_<?php $this->Html->_($country->alpha2);?>">
                 <td colspan="6" class="subtable">
@@ -108,6 +144,9 @@ $(document).ready(function() {
 	$('#admin_main-countries .country-row').click(function() {
 		$(this).blestaUpdateRow('" . $this->Html->_($this->base_uri, true) . "plugin/states_countries/admin_main/getstates/' + $(this).next('tr').attr('id').split('_')[1], '.subtable');
 	});
+    
+    // Handle confirmation
+	$('#countries').find('td a.manage[rel]').blestaModalConfirm({base_url: '" . $this->Html->safe($this->base_uri) . "', close: '" . $this->_("AppController.modal.text_close", true) . "', submit: true});
 });
 ");
 ?>

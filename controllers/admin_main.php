@@ -32,6 +32,7 @@ class AdminMain extends StatesCountriesController {
         $countries = $this->StatesCountriesCountries->getAll();
         
         $this->set("countries", $countries);
+        $this->set("countries_authorized", $this->authorized("states_countries.admin_countries", "*"));
     }
     
     /**
@@ -46,8 +47,9 @@ class AdminMain extends StatesCountriesController {
         }
         
         $states = $this->StatesCountriesStates->getAll($country->alpha2);
+        $states_authorized = $this->authorized("states_countries.admin_states", "*");
         
-        echo $this->outputAsJson($this->partial("admin_main_getstates", compact("country", "states")));
+        echo $this->outputAsJson($this->partial("admin_main_getstates", compact("country", "states", "states_authorized")));
         return false;
     }
 }

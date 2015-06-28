@@ -3,9 +3,15 @@
 		?>
 		<div class="state-list">
 			<div id="state-<?php $this->Html->_($country->alpha2);?>" class="links_row">
+				<?php
+				if ($this->Html->ifSet($states_authorized)) {
+				?>
 				<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_states/add/" . $this->Html->ifSet($country->alpha2));?>" class="btn_right">
 					<span><?php $this->_("AdminMain.getstates.categorylink_add_state");?></span>
 				</a>
+				<?php
+				}
+				?>
 				<a href="#all" class="all-states btn_right">
 					<span><?php $this->_("AdminMain.getstates.show_all");?></span>
 				</a>
@@ -27,25 +33,48 @@
 					<tr class="heading_row">
 						<td><?php $this->_("AdminMain.getstates.heading_state_name");?></td>
 						<td><?php $this->_("AdminMain.getstates.heading_state_code");?></td>
-						<td>
-							<?php $this->_("AdminMain.getstates.heading_country_in_use");?>
-							<span class="tooltip">
-								<?php echo $this->_("AppController.tooltip.text");?>
-								<div><?php $this->_("AdminMain.!tooltip.state_in_use");?></div>
-							</span>
-						</td>
+						<td><?php $this->_("AdminMain.getstates.heading_country_in_use");?></td>
+						<?php
+						if ($this->Html->ifSet($states_authorized)) {
+						?>
 						<td class="last"><?php $this->_("AdminMain.index.heading_options");?></td>
+						<?php
+						}
+						?>
 					</tr>
 					<?php
 					// Display all states
 					$i = 0;
 					foreach ($states as $state) {
-						$in_use = ($this->Html->ifSet($state->num_contacts) > 0);
+						$in_use = $this->Html->ifSet($state->num_contacts, 0) + $this->Html->ifSet($state->num_taxes, 0) + $this->Html->ifSet($state->num_cc_accounts, 0) + $this->Html->ifSet($state->num_ach_accounts, 0);
+						$in_use = ($in_use > 0);
 					?>
 					<tr class="<?php echo $this->Html->safe($this->Html->concat(" ", "state-row", (($i++%2 == 1) ? "odd_row" : "")));?> <?php echo $in_use ? "in_use" : "";?>"<?php echo !$in_use ? " style=\"display:none;\"" : "";?>>
 						<td><?php $this->Html->_($state->name);?></td>
 						<td><?php $this->Html->_($state->code);?></td>
-						<td><?php $this->Html->_($state->num_contacts);?></td>
+						<td>
+							<div class="<?php echo $in_use ? "active" : "inactive";?>"><?php
+								if ($in_use) {
+								?>
+								<span class="tooltip" style="margin-left:0;">&nbsp;&nbsp;&nbsp;
+									<div>
+										<?php
+										$this->_("AdminMain.tooltip.state.in_use_by", false,
+											$this->Html->ifSet($state->num_contacts, 0),
+											$this->Html->ifSet($state->num_taxes, 0),
+											$this->Html->ifSet($state->num_cc_accounts, 0),
+											$this->Html->ifSet($state->num_ach_accounts, 0)
+										);
+										?>
+									</div>
+								</span>
+								<?php
+								}
+							?></div>
+						</td>
+						<?php
+						if ($this->Html->ifSet($states_authorized)) {
+						?>
 						<td class="last">
 							<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_states/edit/" . $this->Html->ifSet($country->alpha2) . "/" . $this->Html->ifSet($state->code));?>"><?php $this->_("AdminMain.index.option_edit");?></a>
 							<?php
@@ -60,6 +89,9 @@
 							}
 							?>
 						</td>
+						<?php
+						}
+						?>
 					</tr>
 					<?php
 					}

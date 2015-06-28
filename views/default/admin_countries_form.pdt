@@ -1,0 +1,45 @@
+
+		<div class="inner">
+			<div class="pad">
+				<ul>
+					<li>
+						<?php
+						$this->Form->label($this->_("AdminCountries.add.field_name", true), "name");
+						$this->Form->fieldText("name", $this->Html->ifSet($vars->name), array('id' => "name", 'maxlength' => "255"));
+						?>
+					</li>
+					<li>
+						<?php
+						$this->Form->label($this->_("AdminCountries.add.field_alt_name", true), "alt_name");
+						$this->Form->fieldText("alt_name", $this->Html->ifSet($vars->alt_name), array('id' => "alt_name", 'maxlength' => "255"));
+						?>
+					</li>
+                    <li>
+						<?php
+						$this->Form->label($this->_("AdminCountries.add.field_alpha2", true), "alpha2");
+						$this->Form->fieldText("alpha2", $this->Html->ifSet($vars->alpha2), array('id' => "alpha2", 'class' => "small", 'maxlength' => "2"));
+						?>
+					</li>
+					<li>
+						<?php
+						$this->Form->label($this->_("AdminCountries.add.field_alpha3", true), "alpha3");
+						$this->Form->fieldText("alpha3", $this->Html->ifSet($vars->alpha3), array('id' => "alpha3", 'class' => "small", 'maxlength' => "3"));
+						?>
+					</li>
+					<?php
+					if ($this->Html->ifSet($states_authorized)) {
+					?>
+					<li>
+						<?php
+						$this->Form->fieldCheckbox("add_states", "true", $this->Html->ifSet($vars->add_states, "true") == "true", array('id' => "add_states"));
+						$this->Form->label($this->_("AdminCountries.add.field_add_states", true), "add_states", array('class' => "inline"));
+						?>
+						<span class="tooltip"><?php $this->_("AppController.tooltip.text");?> <div><?php $this->_("AdminCountries.!tooltip.add_states");?></div></span>
+					</li>
+					<?php
+					}
+					?>
+				</ul>
+			</div>
+			<div class="button_row"><a class="btn_right submit" href="#"><?php $this->_("AdminCountries.add.field_submit");?></a></div>
+		</div>

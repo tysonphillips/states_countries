@@ -46,7 +46,7 @@ class StatesCountriesStates extends StatesCountriesModel {
      *  - country_alpha2 The 2-character country code to add the state to
      *  - code The 3-character state code
      *  - name The state's name
-     * @return mixed An stdClass object representing the new state, or void otherwise
+     * @return mixed An stdClass object representing the updated state, or void otherwise
      */
     public function edit($code, array $vars) {
         $vars['current_code'] = $code;
@@ -56,7 +56,7 @@ class StatesCountriesStates extends StatesCountriesModel {
             $this->begin();
             
             $fields = array("code", "name");
-            if ($code == $vars['code']) {
+            if (strtolower($code) == strtolower($vars['code'])) {
                 $this->Record->duplicate("name", "=", $vars['name'])
                     ->insert("states", $vars, $fields);
             }
@@ -82,10 +82,10 @@ class StatesCountriesStates extends StatesCountriesModel {
     public function delete($country_alpha2, $code) {
         $rules = array(
             'country_alpha2' => array(
-                'in_use' => array(
+                'delete' => array(
                     'rule' => array(array($this, "inUse"), $code),
                     'negate' => true,
-                    'message' => $this->_("StatesCountriesStates.!error.country_alpha2.in_use")
+                    'message' => $this->_("StatesCountriesStates.!error.country_alpha2.delete")
                 )
             )
         );
@@ -165,12 +165,20 @@ class StatesCountriesStates extends StatesCountriesModel {
      */
     private function getStates($country_alpha2 = null) {
         $select_fields = array("states.*");
-        $extra_fields = array("COUNT(contacts.id)" => "num_contacts");
+        $extra_fields = array(
+            "COUNT(contacts.id)" => "num_contacts",
+            "COUNT(taxes.id)" => "num_taxes",
+            "COUNT(accounts_cc.id)" => "num_cc_accounts",
+            "COUNT(accounts_ach.id)" => "num_ach_accounts"
+        );
         
         $this->Record->select($select_fields)
             ->select($extra_fields, false)
             ->from("states")
-            ->leftJoin("contacts", "contacts.state", "=", "states.code", false);
+            ->leftJoin("contacts", "contacts.state", "=", "states.code", false)
+            ->leftJoin("taxes", "taxes.state", "=", "states.code", false)
+            ->leftJoin("accounts_cc", "accounts_cc.state", "=", "states.code", false)
+            ->leftJoin("accounts_ach", "accounts_ach.state", "=", "states.code", false);
         
         // Filter by country
         if ($country_alpha2) {
@@ -186,9 +194,11 @@ class StatesCountriesStates extends StatesCountriesModel {
 	 * Returns the rule set for adding/editing states
 	 *
 	 * @param array $vars An array of state info including:
+	 *  - current_code The current state code for edit
 	 * 	- code The state code
 	 * 	- country_alpha2 The 2-character country code ISO 3166-2
-	 * 	- name The name of the state in its native language
+	 * 	- name The name of the state
+	 * @param boolean $edit True to get the edit rules, or false for the add rules
 	 * @return array State rules
 	 */
 	private function getRules(array $vars, $edit = false) {
@@ -227,7 +237,11 @@ class StatesCountriesStates extends StatesCountriesModel {
 					'rule' => "isEmpty",
 					'negate' => true,
 					'message' => $this->_("StatesCountriesStates.!error.name.format")
-				)
+				),
+                'length' => array(
+                    'rule' => array("maxLength", 255),
+                    'message' => $this->_("StatesCountriesStates.!error.name.length")
+                )
 			)
 		);
         

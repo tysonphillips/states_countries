@@ -1,0 +1,16 @@
+
+		<?php
+		echo $this->Html->ifSet($message);
+		
+		$this->Widget->clear();		
+		$this->Widget->create($this->_("AdminCountries.edit.boxtitle_edit", true, $this->Html->_($country->name, true)));
+		
+		$this->Form->create();
+		?>
+		<div class="inner">
+			<?php echo $this->Html->ifSet($form);?>
+		</div>
+		<?php
+		$this->Form->end();
+		$this->Widget->end();
+		?>
