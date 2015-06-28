@@ -16,8 +16,8 @@ $lang['AdminCountries.!tooltip.add_states'] = "Check this field to be taken to a
 $lang['AdminCountries.add.boxtitle_add'] = "Add Country";
 $lang['AdminCountries.add.field_name'] = "Name";
 $lang['AdminCountries.add.field_alt_name'] = "Alternate/Native Name (Optional)";
-$lang['AdminCountries.add.field_alpha2'] = "Country 2-Character Code";
-$lang['AdminCountries.add.field_alpha3'] = "Country 3-Character Code";
+$lang['AdminCountries.add.field_alpha2'] = "2-Character Country Code";
+$lang['AdminCountries.add.field_alpha3'] = "3-Character Country Code";
 $lang['AdminCountries.add.field_add_states'] = "Add States for this Country";
 $lang['AdminCountries.add.field_submit'] = "Save";
 
