@@ -9,7 +9,7 @@ However, these states and countries are not used, or are not accurate enough, fo
 
 ### Requirements
 * Version 3.1.0, or greater, of Blesta
-***
+
 
 ### How to Install
 1. Download the zip containing the plugin's files.
@@ -17,33 +17,40 @@ However, these states and countries are not used, or are not accurate enough, fo
 3. Login to the Blesta admin interface and navigate to __[Settings] -> [Plugins] -> [Available]__.
 4. Click the "Install" button next to the "State/Country Manager" plugin.
 5. States and Countries will now be available under __[Tools] -> [States&Countries]__.
-***
+
 
 ### Functionality
 * Adding/Updating/Deleting Countries
 * Adding/Updating/Deleting States
+
 ***
 
 ### Permissions
 The use of states and countries from this plugin are subject to Staff Group permissions. Staff Group permissions can be managed by editing a staff group under __[Settings] -> [System] -> [Staff] -> [Staff Groups]__.
 ##### Staff Group Permissions
-![Staff Group Permissions](staff_group_permissions.png)
+![Staff Group Permissions](screenshots/staff_group_permissions.png)
 
 1. __States&Countries__ | This permission grants access to view states and countries under __[Tools]__.
 2. __States&Countries - Manage Countries__ | This permission grants access to add, edit, and delete countries.
 3. __States&Countries - Manage States__ | This permission grants access to add, edit, and delete states.  
 _NOTE: States and countries are system-level data, and therefore changes to them will affect the entire system and are not limited to specific companies. Giving a staff group permission to change states or countries on one company gives them the ability to change them for all companies._
+
 ***
 
 ### Screenshots
 ##### Viewing all States and Countries _In Use_  
-![Countries/States Listing](countries_list.png)
+![Countries/States Listing](screenshots/countries_list.png)
+
 ***
+
 ##### Viewing all States for a Specific Country  
-![States for a Specific Country](state_in_use.png)  
+![States for a Specific Country](screenshots/state_in_use.png)  
+
 ***
+
 ##### Updating a Country  
-![Updating a Country](update_country.png)  
+![Updating a Country](screenshots/update_country.png)  
+
 ***
 
 ### FAQ
@@ -59,4 +66,5 @@ _The only exception to this is with settings. There is a setting named "country"
 
 __Where are states and countries referenced in the system?__  
 As of version 3.5 of Blesta, states and countries are referenced in tax rules, payment accounts, and client contacts. They may also be used in third-party plugins.
+
 ***
