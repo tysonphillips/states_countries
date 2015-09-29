@@ -163,7 +163,7 @@ class StatesCountriesStates extends StatesCountriesModel {
      *
      * @return Record An instance of the partially constructed query
      */
-    private function getStates($country_alpha2 = null) {
+    private function getStates($country_alpha2) {
         $select_fields = array("states.*");
         $extra_fields = array(
             "COUNT(contacts.id)" => "num_contacts",
@@ -175,17 +175,16 @@ class StatesCountriesStates extends StatesCountriesModel {
         $this->Record->select($select_fields)
             ->select($extra_fields, false)
             ->from("states")
+                ->on("contacts.country", "=", $country_alpha2)
             ->leftJoin("contacts", "contacts.state", "=", "states.code", false)
+                ->on("taxes.country", "=", $country_alpha2)
             ->leftJoin("taxes", "taxes.state", "=", "states.code", false)
+                ->on("accounts_cc.country", "=", $country_alpha2)
             ->leftJoin("accounts_cc", "accounts_cc.state", "=", "states.code", false)
-            ->leftJoin("accounts_ach", "accounts_ach.state", "=", "states.code", false);
-        
-        // Filter by country
-        if ($country_alpha2) {
-            $this->Record->where("states.country_alpha2", "=", $country_alpha2);
-        }
-        
-        $this->Record->group(array("states.code", "states.country_alpha2", "states.name"));
+                ->on("accounts_ach.country", "=", $country_alpha2)
+            ->leftJoin("accounts_ach", "accounts_ach.state", "=", "states.code", false)
+            ->where("states.country_alpha2", "=", $country_alpha2)
+            ->group(array("states.code", "states.country_alpha2", "states.name"));
         
         return $this->Record;
     }
