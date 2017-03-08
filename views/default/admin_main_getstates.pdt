@@ -1,123 +1,122 @@
-		<?php
-		if ($this->Html->ifSet($states, false)) {
-		?>
-		<div class="state-list">
-			<div id="state-<?php $this->Html->_($country->alpha2);?>" class="links_row">
-				<?php
-				if ($this->Html->ifSet($states_authorized)) {
-				?>
-				<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_states/add/" . $this->Html->ifSet($country->alpha2));?>" class="btn_right">
-					<span><?php $this->_("AdminMain.getstates.categorylink_add_state");?></span>
-				</a>
-				<?php
-				}
-				?>
-				<a href="#all" class="all-states btn_right">
-					<span><?php $this->_("AdminMain.getstates.show_all");?></span>
-				</a>
-				<a href="#in_use" class="in_use-states btn_right" style="display:none;">
-					<span><?php $this->_("AdminMain.getstates.show_in_use");?></span>
-				</a>
-			</div>
-			<div class="clear"></div>
-			<div class="empty-states empty_section" style="display:none;">
-				<div class="empty_box">
-					<?php $this->_("AdminMain.getstates.no_results");?>
-				</div>
-			</div>
-			<div class="states group_title_row">
-				<div class="title_row first">
-					<h3><?php $this->_("AdminMain.getstates.heading_states");?></h3>
-				</div>
-				<table class="table">
-					<tr class="heading_row">
-						<td><?php $this->_("AdminMain.getstates.heading_state_name");?></td>
-						<td><?php $this->_("AdminMain.getstates.heading_state_code");?></td>
-						<td><?php $this->_("AdminMain.getstates.heading_country_in_use");?></td>
-						<?php
-						if ($this->Html->ifSet($states_authorized)) {
-						?>
-						<td class="last"><?php $this->_("AdminMain.index.heading_options");?></td>
-						<?php
-						}
-						?>
-					</tr>
-					<?php
-					// Display all states
-					$i = 0;
-					foreach ($states as $state) {
-						$in_use = $this->Html->ifSet($state->num_contacts, 0) + $this->Html->ifSet($state->num_taxes, 0) + $this->Html->ifSet($state->num_cc_accounts, 0) + $this->Html->ifSet($state->num_ach_accounts, 0);
-						$in_use = ($in_use > 0);
-					?>
-					<tr class="<?php echo $this->Html->safe($this->Html->concat(" ", "state-row", (($i++%2 == 1) ? "odd_row" : "")));?> <?php echo $in_use ? "in_use" : "";?>"<?php echo !$in_use ? " style=\"display:none;\"" : "";?>>
-						<td><?php $this->Html->_($state->name);?></td>
-						<td><?php $this->Html->_($state->code);?></td>
-						<td>
-							<div class="<?php echo $in_use ? "active" : "inactive";?>"><?php
-								if ($in_use) {
-								?>
-								<span class="tooltip" style="margin-left:0;">&nbsp;&nbsp;&nbsp;
-									<div>
-										<?php
-										$this->_("AdminMain.tooltip.state.in_use_by", false,
-											$this->Html->ifSet($state->num_contacts, 0),
-											$this->Html->ifSet($state->num_taxes, 0),
-											$this->Html->ifSet($state->num_cc_accounts, 0),
-											$this->Html->ifSet($state->num_ach_accounts, 0)
-										);
-										?>
-									</div>
-								</span>
-								<?php
-								}
-							?></div>
-						</td>
-						<?php
-						if ($this->Html->ifSet($states_authorized)) {
-						?>
-						<td class="last">
-							<a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_states/edit/" . $this->Html->ifSet($country->alpha2) . "/" . $this->Html->ifSet($state->code));?>"><?php $this->_("AdminMain.index.option_edit");?></a>
-							<?php
-							if (!$in_use) {
-								$this->Form->create($this->base_uri . "plugin/states_countries/admin_states/delete/");
-								$this->Form->fieldHidden("country_alpha2", $this->Html->ifSet($country->alpha2));
-								$this->Form->fieldHidden("code", $this->Html->ifSet($state->code));
-							?>
-							<a href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_states/delete/");?>" class="manage" rel="<?php echo $this->Html->safe($this->_("AdminMain.getstates.confirm_delete", true, $this->Html->ifSet($state->name)));?>"><?php $this->_("AdminMain.index.option_delete");?></a>
-							<?php
-								$this->Form->end();
-							}
-							?>
-						</td>
-						<?php
-						}
-						?>
-					</tr>
-					<?php
-					}
-					unset($i);
-					?>
-				</table>
-			</div>
-		</div>
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$(this).blestaBindToolTips();
-				$(this).bindToggleAllStates('#state-<?php $this->Html->_($country->alpha2);?>');
-				
-				// Handle confirmation
-				$('#state-<?php $this->Html->_($country->alpha2);?>').closest('.state-list').find('.states table a.manage[rel]').blestaModalConfirm({base_url: '<?php echo $this->base_uri;?>', close: '<?php $this->_("AppController.modal.text_close");?>', submit: true});
-			});
-		</script>
-		<?php
-		}
-		else {
-		?>
-		<div class="empty_section">
-			<div class="empty_box">
-				<?php $this->_("AdminMain.getstates.no_results");?>
-			</div>
-		</div>
-		<?php
-		}
-		?>
+        <?php
+        if ($this->Html->ifSet($states, false)) {
+        ?>
+        <div class="state-list">
+            <div id="state-<?php $this->Html->_($country->alpha2);?>" class="links_row">
+                <?php
+                if ($this->Html->ifSet($states_authorized)) {
+                ?>
+                <a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_states/add/" . $this->Html->ifSet($country->alpha2));?>" class="btn btn-default btn-sm pull-right">
+                    <i class="fa fa-plus"></i>
+                    <span><?php $this->_("AdminMain.getstates.categorylink_add_state");?></span>
+                </a>
+                <?php
+                }
+                ?>
+                <a href="#all" class="all-states btn btn-default btn-sm pull-right">
+                    <i class="fa fa-expand"></i>
+                    <span><?php $this->_("AdminMain.getstates.show_all");?></span>
+                </a>
+                <a href="#in_use" class="in_use-states btn btn-default btn-sm pull-right" style="display:none;">
+                    <i class="fa fa-compress"></i>
+                    <span><?php $this->_("AdminMain.getstates.show_in_use");?></span>
+                </a>
+            </div>
+            <div class="clear"></div>
+            <div class="empty-states empty_section" style="display:none;">
+                <div class="empty_box">
+                    <?php $this->_("AdminMain.getstates.no_results");?>
+                </div>
+            </div>
+            <div class="states group_title_row">
+                <div class="title_row first">
+                    <h3><?php $this->_("AdminMain.getstates.heading_states");?></h3>
+                </div>
+                <table class="table">
+                    <tr class="heading_row">
+                        <td><?php $this->_("AdminMain.getstates.heading_state_name");?></td>
+                        <td><?php $this->_("AdminMain.getstates.heading_state_code");?></td>
+                        <td><?php $this->_("AdminMain.getstates.heading_country_in_use");?></td>
+                        <?php
+                        if ($this->Html->ifSet($states_authorized)) {
+                        ?>
+                        <td class="last"><?php $this->_("AdminMain.index.heading_options");?></td>
+                        <?php
+                        }
+                        ?>
+                    </tr>
+                    <?php
+                    // Display all states
+                    $i = 0;
+                    foreach ($states as $state) {
+                        $in_use = $this->Html->ifSet($state->num_contacts, 0) + $this->Html->ifSet($state->num_taxes, 0) + $this->Html->ifSet($state->num_cc_accounts, 0) + $this->Html->ifSet($state->num_ach_accounts, 0);
+                        $in_use = ($in_use > 0);
+                    ?>
+                    <tr class="<?php echo $this->Html->safe($this->Html->concat(" ", "state-row", (($i++%2 == 1) ? "odd_row" : "")));?> <?php echo $in_use ? "in_use" : "";?>"<?php echo !$in_use ? " style=\"display:none;\"" : "";?>>
+                        <td><?php $this->Html->_($state->name);?></td>
+                        <td><?php $this->Html->_($state->code);?></td>
+                        <td>
+                            <div>
+                                <span class="tooltip" style="margin-left:0;">
+                                    <i class="fa fa-<?php echo $in_use ? "check" : "times";?>"></i>
+                                    <div>
+                                        <?php
+                                        $this->_("AdminMain.tooltip.state.in_use_by", false,
+                                            $this->Html->ifSet($state->num_contacts, 0),
+                                            $this->Html->ifSet($state->num_taxes, 0),
+                                            $this->Html->ifSet($state->num_cc_accounts, 0),
+                                            $this->Html->ifSet($state->num_ach_accounts, 0)
+                                        );
+                                        ?>
+                                    </div>
+                                </span>
+                            </div>
+                        </td>
+                        <?php
+                        if ($this->Html->ifSet($states_authorized)) {
+                        ?>
+                        <td class="last">
+                            <a target="_blank" href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_states/edit/" . $this->Html->ifSet($country->alpha2) . "/" . $this->Html->ifSet($state->code));?>"><?php $this->_("AdminMain.index.option_edit");?></a>
+                            <?php
+                            if (!$in_use) {
+                                $this->Form->create($this->base_uri . "plugin/states_countries/admin_states/delete/");
+                                $this->Form->fieldHidden("country_alpha2", $this->Html->ifSet($country->alpha2));
+                                $this->Form->fieldHidden("code", $this->Html->ifSet($state->code));
+                            ?>
+                            <a href="<?php echo $this->Html->safe($this->base_uri . "plugin/states_countries/admin_states/delete/");?>" class="manage" rel="<?php echo $this->Html->safe($this->_("AdminMain.getstates.confirm_delete", true, $this->Html->ifSet($state->name)));?>"><?php $this->_("AdminMain.index.option_delete");?></a>
+                            <?php
+                                $this->Form->end();
+                            }
+                            ?>
+                        </td>
+                        <?php
+                        }
+                        ?>
+                    </tr>
+                    <?php
+                    }
+                    unset($i);
+                    ?>
+                </table>
+            </div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $(this).blestaBindToolTips();
+                $(this).bindToggleAllStates('#state-<?php $this->Html->_($country->alpha2);?>');
+
+                // Handle confirmation
+                $('#state-<?php $this->Html->_($country->alpha2);?>').closest('.state-list').find('.states table a.manage[rel]').blestaModalConfirm({base_url: '<?php echo $this->base_uri;?>', close: '<?php $this->_("AppController.modal.text_close");?>', submit: true});
+            });
+        </script>
+        <?php
+        } else {
+        ?>
+        <div class="empty_section">
+            <div class="empty_box">
+                <?php $this->_("AdminMain.getstates.no_results");?>
+            </div>
+        </div>
+        <?php
+        }
+        ?>

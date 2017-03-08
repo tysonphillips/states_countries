@@ -1,20 +1,24 @@
 
-		<div class="inner">
-			<div class="pad">
-				<ul>
-					<li>
-						<?php
-						$this->Form->label($this->_("AdminStates.add.field_name", true), "name");
-						$this->Form->fieldText("name", $this->Html->ifSet($vars->name), array('id' => "name", 'maxlength' => "255"));
-						?>
-					</li>
+        <div class="inner">
+            <div class="pad">
+                <ul>
                     <li>
-						<?php
-						$this->Form->label($this->_("AdminStates.add.field_code", true), "code");
-						$this->Form->fieldText("code", $this->Html->ifSet($vars->code), array('id'=>"code", 'class' => "small", 'maxlength' => "3"));
-						?>
-					</li>
-				</ul>
-			</div>
-			<div class="button_row"><a class="btn_right submit" href="#"><?php $this->_("AdminStates.add.field_submit");?></a></div>
-		</div>
+                        <?php
+                        $this->Form->label($this->_("AdminStates.add.field_name", true), "name");
+                        $this->Form->fieldText("name", $this->Html->ifSet($vars->name), ['id' => "name", 'maxlength' => "255"]);
+                        ?>
+                    </li>
+                    <li>
+                        <?php
+                        $this->Form->label($this->_("AdminStates.add.field_code", true), "code");
+                        $this->Form->fieldText("code", $this->Html->ifSet($vars->code), ['id' => "code", 'class' => "small", 'maxlength' => "3"]);
+                        ?>
+                    </li>
+                </ul>
+            </div>
+            <div class="button_row">
+                <?php
+                $this->Form->fieldSubmit('submit', $this->_("AdminStates.add.field_submit", true), ['class' => 'btn btn-primary pull-right']);
+                ?>
+            </div>
+        </div>
