@@ -8,7 +8,8 @@ However, these states and countries are not used, or are not accurate enough, fo
 ***
 
 ### Requirements
-* Version 3.1.0, or greater, of Blesta
+* Version 4.0.0, or greater, of Blesta
+* PHP 5.4.0+
 
 
 ### How to Install

@@ -1,42 +1,46 @@
         <?php
         echo $this->Html->ifSet($message);
-        
-        $link_buttons = array(
-            array(
+
+        $link_buttons = [
+            [
                 'name' => $this->_("AdminMain.index.show_all", true),
-                'attributes' => array(
+                'icon' => 'fa fa-expand',
+                'attributes' => [
                     'href' => "#all",
                     'id' => "all-countries",
-                )
-            ),
-            array(
+                ]
+            ],
+            [
                 'name' => $this->_("AdminMain.index.show_in_use", true),
-                'attributes' => array(
+                'icon' => 'fa fa-compress',
+                'attributes' => [
                     'href' => "#in_use",
                     'id' => "in_use-countries",
                     'style' => "display:none;"
-                )
-            )
-        );
-        
+                ]
+            ]
+        ];
+
         if ($this->Html->ifSet($countries_authorized)) {
-            $add_button = array(
-                array(
+            $add_button = [
+                [
                     'name' => $this->_("AdminMain.index.categorylink_add", true),
-                    'attributes' => array(
+                    'icon' => 'fa fa-plus',
+                    'attributes' => [
                         'href' => $this->Html->safe($this->base_uri . "plugin/states_countries/admin_countries/add/"),
                         'target' => "_blank"
-                    ),
-                )
-            );
+                    ],
+                ]
+            ];
             $link_buttons = array_merge($add_button, $link_buttons);
         }
-        
-        
+
+
         $this->Widget->clear();
         $this->Widget->setLinkButtons($link_buttons);
-        $this->Widget->create($this->_("AdminMain.index.boxtitle_countries", true), array('id'=>"admin_main-countries"), $this->Html->ifSet($render_section, null));
-        
+        $this->Widget->setStyleSheet($this->view_dir . 'css/styles.css?ver=2.0.0', ['id' => 'states_countries_styles']);
+        $this->Widget->create($this->_("AdminMain.index.boxtitle_countries", true), ['id' => "admin_main-countries"], $this->Html->ifSet($render_section, null));
+
         if ($this->Html->ifSet($countries, false)) {
         ?>
         <div id="empty-countries" class="empty_section" style="display:none;">
@@ -72,10 +76,9 @@
                 <td><?php $this->Html->_($country->alpha2);?></td>
                 <td><?php $this->Html->_($country->alpha3);?></td>
                 <td>
-                    <div class="<?php echo $in_use ? "active" : "inactive";?>"><?php
-                        if ($in_use) {
-                        ?>
-                        <span class="tooltip" style="margin-left:0;">&nbsp;&nbsp;&nbsp;
+                    <div>
+                        <span class="tooltip" style="margin-left:0;">
+                            <i class="fa fa-<?php echo $in_use ? "check" : "times";?>"></i>
                             <div>
                                 <?php
                                 $this->_("AdminMain.tooltip.country.in_use_by", false,
@@ -87,9 +90,7 @@
                                 ?>
                             </div>
                         </span>
-                        <?php
-                        }
-                    ?></div>
+                    </div>
                 </td>
                 <?php
                 if ($this->Html->ifSet($countries_authorized)) {
@@ -114,7 +115,7 @@
             <tr class="expand_details" id="country_<?php $this->Html->_($country->alpha2);?>">
                 <td colspan="6" class="subtable">
                 </td>
-            </tr>	
+            </tr>
             <?php
             }
             unset($i);
@@ -122,8 +123,7 @@
         </table>
         <script type="text/javascript" src="<?php echo $this->Html->safe($this->view_dir . "javascript/countries.js");?>"></script>
         <?php
-        }
-        else {
+        } else {
         ?>
         <div class="empty_section">
             <div class="empty_box">
@@ -137,16 +137,15 @@
 <?php
 $this->Javascript->setInline("
 $(document).ready(function() {
-	// Fetch all states in the country
-	$('#admin_main-countries .country-row a', this).click(function(e) {
-		e.stopPropagation();
-	});
-	$('#admin_main-countries .country-row').click(function() {
-		$(this).blestaUpdateRow('" . $this->Html->_($this->base_uri, true) . "plugin/states_countries/admin_main/getstates/' + $(this).next('tr').attr('id').split('_')[1], '.subtable');
-	});
-    
+    // Fetch all states in the country
+    $('#admin_main-countries .country-row a', this).click(function(e) {
+        e.stopPropagation();
+    });
+    $('#admin_main-countries .country-row').click(function() {
+        $(this).blestaUpdateRow('" . $this->Html->_($this->base_uri, true) . "plugin/states_countries/admin_main/getstates/' + $(this).next('tr').attr('id').split('_')[1], '.subtable');
+    });
+
     // Handle confirmation
-	$('#countries').find('td a.manage[rel]').blestaModalConfirm({base_url: '" . $this->Html->safe($this->base_uri) . "', close: '" . $this->_("AppController.modal.text_close", true) . "', submit: true});
+    $('#countries').find('td a.manage[rel]').blestaModalConfirm({base_url: '" . $this->Html->safe($this->base_uri) . "', close: '" . $this->_("AppController.modal.text_close", true) . "', submit: true});
 });
 ");
-?>

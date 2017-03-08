@@ -1,0 +1,10 @@
+/* States&Countries */
+#admin_main-countries .table td .links_row a {
+    color:#333;
+    text-decoration:none;
+}
+
+#admin_main-countries .table td .tooltip {
+    border:0;
+    color:#333;
+}
